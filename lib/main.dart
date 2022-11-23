@@ -1,9 +1,12 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_news_app/network/dio/dio_helper.dart';
 
 import 'layouts/home_layout.dart';
 
 void main() {
+  DIOHelper.init();
   runApp(const MyApp());
 }
 
@@ -20,10 +23,6 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(
             color: Colors.white,
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
           ),
           backgroundColor: Colors.orange,
           elevation: 0.0,
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
           ),
           backgroundColor: Colors.orange,
         ),
-
       ),
       debugShowCheckedModeBanner: false,
     );
