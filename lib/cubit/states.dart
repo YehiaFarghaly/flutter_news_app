@@ -7,3 +7,17 @@ class GetNewsBusinessError extends NewsStates{
    GetNewsBusinessError(this.error);
 }
 class GetNewsBusinessLoading extends NewsStates{}
+
+class GetNewsSportsSuccess extends NewsStates{}
+class GetNewsSportsError extends NewsStates{
+   String error;
+   GetNewsSportsError(this.error);
+}
+class GetNewsSportsLoading extends NewsStates{}
+
+class GetNewsScienceSuccess extends NewsStates{}
+class GetNewsScienceError extends NewsStates{
+   String error;
+   GetNewsScienceError(this.error);
+}
+class GetNewsScienceLoading extends NewsStates{}

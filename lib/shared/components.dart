@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-Widget buildNewsArticle(){
+Widget buildNewsArticle(article){
   return Container(
-    color: Colors.brown[200],
+    color: Colors.white,
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
@@ -13,7 +13,7 @@ Widget buildNewsArticle(){
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
-                image: NetworkImage('https://media.wired.com/photos/5b899992404e112d2df1e94e/master/pass/trash2-01.jpg'),
+                image: NetworkImage('${article['urlToImage']}'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -30,17 +30,21 @@ Widget buildNewsArticle(){
                 children: [
                   Expanded(
                     child: Text(
-                      'titleasdddddddfghjkjjkjl;kjlk''hjsahjsadhkjdhaksdhakdhasldhhhhhdsasaksdajskdhakdghhcvjvhnbmnbmbvnvmj,hbm b ,nv,.mn,hjbbjhbjlhlhbjdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+                      '${article['title']}',
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
+                      maxLines: 3,
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.amber[800],
                       ),
                     ),
                   ),
-                  Text('date'),
+                  Text('${article['publishedAt']}',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  ),
                 ],
               ),
             ),
@@ -57,4 +61,14 @@ Widget myDivider(){
     height: 2,
     color: Colors.brown[300],
   );
+}
+
+Widget articleBuilder(list){
+  return list.length==0
+      ? Center(child: CircularProgressIndicator())
+      : ListView.separated(
+      physics:BouncingScrollPhysics(),
+      itemBuilder: (context,index)=> buildNewsArticle(list[index]),
+      separatorBuilder: (context,index) => myDivider(),
+      itemCount: list.length);
 }

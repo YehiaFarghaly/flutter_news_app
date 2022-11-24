@@ -12,13 +12,8 @@ class BusinessScreen extends StatelessWidget {
     return BlocConsumer<NewsCubit, NewsStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return state is GetNewsBusinessLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.separated(
-          physics:BouncingScrollPhysics(),
-                itemBuilder: (context,index)=> buildNewsArticle(),
-                separatorBuilder: (context,index) => myDivider(),
-                itemCount: 10);
+        var list = NewsCubit.get(context).business;
+        return articleBuilder(list);
       },
     );
   }

@@ -33,21 +33,68 @@ class NewsCubit extends Cubit<NewsStates> {
   List<dynamic> business = [];
 
   void getBusinessNews() {
-    emit(GetNewsBusinessLoading());
+     if(business.length==0){
+       emit(GetNewsBusinessLoading());
+       DIOHelper.getData(
+           PATH, {'country': 'eg', 'category': 'business', 'apiKey': API_KEY})
+           .then((value) {
+         business = value.data['articles'];
+         emit(GetNewsBusinessSuccess());
+         print(business.length);
+       })
+           .catchError((error){
+         emit(GetNewsBusinessError(error));
+       });
+     }
+     else emit(GetNewsBusinessSuccess());
+  }
+
+  List<dynamic> sports = [];
+
+  void getSportsNews() {
+  if(sports.length==0){
+    emit(GetNewsSportsLoading());
     DIOHelper.getData(
-            PATH, {'country': 'eg', 'category': 'business', 'apiKey': API_KEY})
+        PATH, {'country': 'eg', 'category': 'sports', 'apiKey': API_KEY})
         .then((value) {
-                business = value.data['articles'];
-                emit(GetNewsBusinessSuccess());
-                print(business.length);
+      sports = value.data['articles'];
+      emit(GetNewsSportsSuccess());
+      print(sports.length);
     })
         .catchError((error){
-          emit(GetNewsBusinessError(error));
+      emit(GetNewsSportsError(error));
     });
+  }
+  else {
+    emit(GetNewsSportsSuccess());
+  }
+  }
+
+  List<dynamic> science = [];
+
+  void getScienceNews() {
+ if(science.length==0){
+   emit(GetNewsScienceLoading());
+   DIOHelper.getData(
+       PATH, {'country': 'eg', 'category': 'science', 'apiKey': API_KEY})
+       .then((value) {
+     science = value.data['articles'];
+     emit(GetNewsScienceSuccess());
+     print(science.length);
+   })
+       .catchError((error){
+     emit(GetNewsScienceError(error));
+   });
+ }
+ else{
+   emit(GetNewsScienceSuccess());
+ }
   }
 
   void changeBottomItem(int index) {
     currentIdx = index;
+    if(index==1) getScienceNews();
+    else if(index==2) getSportsNews();
     emit(BottomNavState());
   }
 }

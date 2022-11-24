@@ -17,7 +17,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: NewsLayout(),
+      home: 
+      Directionality(
+          textDirection: TextDirection.rtl,
+          child: NewsLayout()
+      ),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.orange[200],
         appBarTheme: AppBarTheme(
