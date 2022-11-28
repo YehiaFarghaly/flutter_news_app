@@ -8,46 +8,38 @@ class NewsLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-
-
-      providers: [
-        BlocProvider(create: (BuildContext context)=> NewsCubit()..getBusinessNews()),
-      ],
-      child: BlocConsumer<NewsCubit,NewsStates>(
-        listener:(context,state){} ,
-        builder:(context,state){
-          var cubit = NewsCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("News App"),
-              actions: [
-                IconButton(onPressed: (){
-                },
-                    icon: Icon(Icons.search,),
-                ),
-                IconButton( icon: Icon(
-                  Icons.brightness_4_outlined,
-                ),
-                  onPressed: (){
-                    ThemeCubit.get(context).toggleTheme();
-                    print("object");
-                  },
-                ),
-              ],
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: cubit.currentIdx,
-              onTap: (index){
-                  cubit.changeBottomItem(index);
+    return BlocConsumer<NewsCubit,NewsStates>(
+      listener:(context,state){} ,
+      builder:(context,state){
+        var cubit = NewsCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("News App"),
+            actions: [
+              IconButton(onPressed: (){
               },
-              items: cubit.bottomItems,
-            ),
-            body: cubit.screens[cubit.currentIdx],
-          );
-        } ,
-
-      ),
+                  icon: Icon(Icons.search,),
+              ),
+              IconButton( icon: Icon(
+                Icons.brightness_4_outlined,
+              ),
+                onPressed: (){
+                  NewsCubit.get(context).changeTheme();
+                  print("object");
+                },
+              ),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: cubit.currentIdx,
+            onTap: (index){
+                cubit.changeBottomItem(index);
+            },
+            items: cubit.bottomItems,
+          ),
+          body: cubit.screens[cubit.currentIdx],
+        );
+      } ,
 
     );
   }

@@ -8,6 +8,7 @@ import 'package:flutter_news_app/modules/science/science_screen.dart';
 import 'package:flutter_news_app/modules/settings/settings_screen.dart';
 import 'package:flutter_news_app/modules/sports/sports_screen.dart';
 import 'package:flutter_news_app/network/dio/dio_helper.dart';
+import 'package:flutter_news_app/network/local/cache_helper.dart';
 
 import '../shared/constants.dart';
 
@@ -22,6 +23,7 @@ class NewsCubit extends Cubit<NewsStates> {
     const SportsScreen(),
     const SettingsScreen()
   ];
+
   List<BottomNavigationBarItem> bottomItems = [
     BottomNavigationBarItem(
       icon: Icon(Icons.business),
@@ -33,87 +35,80 @@ class NewsCubit extends Cubit<NewsStates> {
   List<dynamic> business = [];
 
   void getBusinessNews() {
-     if(business.length==0){
-       emit(GetNewsBusinessLoading());
-       DIOHelper.getData(
-           PATH, {'country': 'eg', 'category': 'business', 'apiKey': API_KEY})
-           .then((value) {
-         business = value.data['articles'];
-         emit(GetNewsBusinessSuccess());
-         print(business.length);
-       })
-           .catchError((error){
-         emit(GetNewsBusinessError(error));
-       });
-     }
-     else emit(GetNewsBusinessSuccess());
+    if (business.length == 0) {
+      emit(GetNewsBusinessLoading());
+      DIOHelper.getData(PATH, {
+        'country': 'eg',
+        'category': 'business',
+        'apiKey': API_KEY
+      }).then((value) {
+        business = value.data['articles'];
+        emit(GetNewsBusinessSuccess());
+        print(business.length);
+      }).catchError((error) {
+        emit(GetNewsBusinessError(error));
+      });
+    } else
+      emit(GetNewsBusinessSuccess());
   }
 
   List<dynamic> sports = [];
 
   void getSportsNews() {
-  if(sports.length==0){
-    emit(GetNewsSportsLoading());
-    DIOHelper.getData(
-        PATH, {'country': 'eg', 'category': 'sports', 'apiKey': API_KEY})
-        .then((value) {
-      sports = value.data['articles'];
+    if (sports.length == 0) {
+      emit(GetNewsSportsLoading());
+      DIOHelper.getData(
+              PATH, {'country': 'eg', 'category': 'sports', 'apiKey': API_KEY})
+          .then((value) {
+        sports = value.data['articles'];
+        emit(GetNewsSportsSuccess());
+        print(sports.length);
+      }).catchError((error) {
+        emit(GetNewsSportsError(error));
+      });
+    } else {
       emit(GetNewsSportsSuccess());
-      print(sports.length);
-    })
-        .catchError((error){
-      emit(GetNewsSportsError(error));
-    });
-  }
-  else {
-    emit(GetNewsSportsSuccess());
-  }
+    }
   }
 
   List<dynamic> science = [];
 
   void getScienceNews() {
- if(science.length==0){
-   emit(GetNewsScienceLoading());
-   DIOHelper.getData(
-       PATH, {'country': 'eg', 'category': 'science', 'apiKey': API_KEY})
-       .then((value) {
-     science = value.data['articles'];
-     emit(GetNewsScienceSuccess());
-     print(science.length);
-   })
-       .catchError((error){
-     emit(GetNewsScienceError(error));
-   });
- }
- else{
-   emit(GetNewsScienceSuccess());
- }
+    if (science.length == 0) {
+      emit(GetNewsScienceLoading());
+      DIOHelper.getData(
+              PATH, {'country': 'eg', 'category': 'science', 'apiKey': API_KEY})
+          .then((value) {
+        science = value.data['articles'];
+        emit(GetNewsScienceSuccess());
+        print(science.length);
+      }).catchError((error) {
+        emit(GetNewsScienceError(error));
+      });
+    } else {
+      emit(GetNewsScienceSuccess());
+    }
   }
 
   void changeBottomItem(int index) {
     currentIdx = index;
-    if(index==1) getScienceNews();
-    else if(index==2) getSportsNews();
+    if (index == 1)
+      getScienceNews();
+    else if (index == 2) getSportsNews();
     print("ads");
     emit(BottomNavState());
   }
-  bool isDark = false;
 
-  void changeTheme(){
-    isDark= !isDark;
-    emit(GetThemeChangedState());
+  bool isDark = CacheHelper.getData('isDark') == null
+      ? false
+      : CacheHelper.getData('isDark')!;
+
+  void changeTheme() {
+    isDark = !isDark;
+    CacheHelper.putData('isDark', isDark).then((value) {
+      emit(GetThemeChangedState());
+    });
+
     print(isDark);
-  }
-}
-
-class ThemeCubit extends Cubit<ThemeMode>{
-  ThemeCubit():super(ThemeMode.light);
-
-  static ThemeCubit get(context) => BlocProvider.of(context);
-  void toggleTheme(){
-    if(state == ThemeMode.light)
-      emit(ThemeMode.dark);
-    else emit(ThemeMode.light);
   }
 }
