@@ -21,3 +21,5 @@ class GetNewsScienceError extends NewsStates{
    GetNewsScienceError(this.error);
 }
 class GetNewsScienceLoading extends NewsStates{}
+
+class GetThemeChangedState extends NewsStates{}

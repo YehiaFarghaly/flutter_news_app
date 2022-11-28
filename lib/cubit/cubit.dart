@@ -95,6 +95,25 @@ class NewsCubit extends Cubit<NewsStates> {
     currentIdx = index;
     if(index==1) getScienceNews();
     else if(index==2) getSportsNews();
+    print("ads");
     emit(BottomNavState());
+  }
+  bool isDark = false;
+
+  void changeTheme(){
+    isDark= !isDark;
+    emit(GetThemeChangedState());
+    print(isDark);
+  }
+}
+
+class ThemeCubit extends Cubit<ThemeMode>{
+  ThemeCubit():super(ThemeMode.light);
+
+  static ThemeCubit get(context) => BlocProvider.of(context);
+  void toggleTheme(){
+    if(state == ThemeMode.light)
+      emit(ThemeMode.dark);
+    else emit(ThemeMode.light);
   }
 }

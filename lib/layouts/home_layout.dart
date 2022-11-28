@@ -8,9 +8,12 @@ class NewsLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context)=> NewsCubit()..getBusinessNews(),
+    return MultiBlocProvider(
 
+
+      providers: [
+        BlocProvider(create: (BuildContext context)=> NewsCubit()..getBusinessNews()),
+      ],
       child: BlocConsumer<NewsCubit,NewsStates>(
         listener:(context,state){} ,
         builder:(context,state){
@@ -20,11 +23,17 @@ class NewsLayout extends StatelessWidget {
               title: Text("News App"),
               actions: [
                 IconButton(onPressed: (){
-
                 },
                     icon: Icon(Icons.search,),
                 ),
-                IconButton(onPressed: (){}, icon: Icon(Icons.settings,)),
+                IconButton( icon: Icon(
+                  Icons.brightness_4_outlined,
+                ),
+                  onPressed: (){
+                    ThemeCubit.get(context).toggleTheme();
+                    print("object");
+                  },
+                ),
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(
@@ -39,6 +48,7 @@ class NewsLayout extends StatelessWidget {
         } ,
 
       ),
+
     );
   }
 }
