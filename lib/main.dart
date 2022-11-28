@@ -31,6 +31,12 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               home: NewsLayout(),
               theme: ThemeData(
+                inputDecorationTheme: InputDecorationTheme(
+                labelStyle: TextStyle(
+                  color: Colors.black
+                )
+
+                ),
                 primarySwatch: Colors.brown,
                 scaffoldBackgroundColor: Colors.white,
                 appBarTheme: AppBarTheme(
@@ -63,6 +69,11 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               darkTheme: ThemeData(
+                inputDecorationTheme: InputDecorationTheme(
+                  labelStyle: TextStyle(
+                    color: Colors.white
+                  )
+                ),
                 primarySwatch: Colors.orange,
                 scaffoldBackgroundColor: Colors.black,
                 appBarTheme: AppBarTheme(

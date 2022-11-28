@@ -69,3 +69,35 @@ Widget articleBuilder(list){
       separatorBuilder: (context,index) => myDivider(),
       itemCount: list.length);
 }
+
+
+Widget defaultFormField({
+  required TextEditingController controller,
+  required TextInputType type,
+  Function? onSubmit(value)?,
+  Function? onChanged(value)?,
+  required String? Function(String? value)? validate,
+  required String label,
+  Function? Function()? onTap,
+}) => TextFormField(
+  controller: controller,
+  keyboardType: type,
+  onFieldSubmitted: onSubmit,
+  onChanged: onChanged,
+  validator: validate,
+  onTap: onTap,
+  decoration: InputDecoration(
+    label: Text(
+      label
+    ),
+    border: InputBorder.none
+  ),
+  style: TextStyle(
+    color: Colors.purple
+  ),
+
+);
+
+void navigateTo(context,widget) => Navigator.push(context,
+    MaterialPageRoute(builder: (context)=>widget)
+);

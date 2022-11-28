@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/cubit/states.dart';
 import 'package:flutter_news_app/modules/business/business_screen.dart';
 import 'package:flutter_news_app/modules/science/science_screen.dart';
-import 'package:flutter_news_app/modules/settings/settings_screen.dart';
+import 'package:flutter_news_app/modules/search/search_screen.dart';
 import 'package:flutter_news_app/modules/sports/sports_screen.dart';
 import 'package:flutter_news_app/network/dio/dio_helper.dart';
 import 'package:flutter_news_app/network/local/cache_helper.dart';
@@ -21,7 +21,7 @@ class NewsCubit extends Cubit<NewsStates> {
     const BusinessScreen(),
     const ScienceScreen(),
     const SportsScreen(),
-    const SettingsScreen()
+     SearchScreen()
   ];
 
   List<BottomNavigationBarItem> bottomItems = [
@@ -46,7 +46,7 @@ class NewsCubit extends Cubit<NewsStates> {
         emit(GetNewsBusinessSuccess());
         print(business.length);
       }).catchError((error) {
-        emit(GetNewsBusinessError(error));
+        emit(GetNewsBusinessError('Error occurred'));
       });
     } else
       emit(GetNewsBusinessSuccess());
@@ -64,7 +64,7 @@ class NewsCubit extends Cubit<NewsStates> {
         emit(GetNewsSportsSuccess());
         print(sports.length);
       }).catchError((error) {
-        emit(GetNewsSportsError(error));
+        emit(GetNewsSportsError('Error occurred'));
       });
     } else {
       emit(GetNewsSportsSuccess());
@@ -83,11 +83,26 @@ class NewsCubit extends Cubit<NewsStates> {
         emit(GetNewsScienceSuccess());
         print(science.length);
       }).catchError((error) {
-        emit(GetNewsScienceError(error));
+        emit(GetNewsScienceError('Error occurred'));
       });
     } else {
       emit(GetNewsScienceSuccess());
     }
+  }
+
+  List<dynamic> search = [];
+
+  void searchForNews(String value) {
+    emit(GetNewsSearchLoading());
+    DIOHelper.getData(
+        SEARCH_PATH, {SEARCH_QUERY: '${value}', 'apiKey': API_KEY})
+        .then((value) {
+      search = value.data['articles'];
+      emit(GetNewsSearchSuccess());
+      print(search.length);
+    }).catchError((error) {
+      emit(GetNewsSearchError('Error occurred'));
+    });
   }
 
   void changeBottomItem(int index) {

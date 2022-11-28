@@ -22,4 +22,11 @@ class GetNewsScienceError extends NewsStates{
 }
 class GetNewsScienceLoading extends NewsStates{}
 
+class GetNewsSearchSuccess extends NewsStates{}
+class GetNewsSearchError extends NewsStates{
+   String error;
+   GetNewsSearchError(this.error);
+}
+class GetNewsSearchLoading extends NewsStates{}
+
 class GetThemeChangedState extends NewsStates{}
